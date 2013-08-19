@@ -1,0 +1,4 @@
+osmltir-test
+============
+
+Test osmltir
