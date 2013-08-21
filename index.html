@@ -12,6 +12,8 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrap-responsive.css" rel="stylesheet">
         <link href="css/docs.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/leaflet.css" />
+        <link rel="stylesheet" href="css/style.css" type="text/css" />        
 
     </head>
 
@@ -165,6 +167,17 @@
         <section id="carte">
             <div class="page-header">
                 <h1>Venir chez nous</h1>
+                <div class="row">
+                    <div class="span5" id="map" style="height:300px;"></div>
+                    <div class="span4">
+                    <address>
+                    <strong>OSML TIR</strong><br>
+                    433 bis Avenue de Dunkerque<br>
+                    59160 LOMME, FRANCE<br>
+                    (+33) 621 754 703
+                    </address>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -428,6 +441,35 @@
     <script src="js/bootstrap-scrollspy.js"></script>
     <script src="js/bootstrap-affix.js"></script>
     <script src="js/application.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function() {
+                //Affichage de la liste des events
+                $.get('data-event.json', function(data) {
+                    data.sort(function(a, b) {
+                        a.date.localeCompare(b.date);
+                        return a.date.localeCompare(b.date);
+                    });
+                    $(data).each(function(index, element) {
+                        var dateTime = new Date(element.date);
+                        $('#event-list h3').after('<div class="event ' + element.eventClass + '"><strong>' + dateTime.toLocaleString() + '</strong><br />' + element.title + '</div>');
+                    });
+                });
+
+
+                $('.sidenav').affix({
+                    offset: {top: 210}
+                });
+
+                var map = L.map('map').setView([50.64366, 3.01471], 13);
+                L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+                }).addTo(map);
+
+                L.marker([50.64366, 3.01471]).addTo(map)
+                        .bindPopup("Club de tir<br />de Lomme").openPopup();
+            });
+        </script>
 
 
   
